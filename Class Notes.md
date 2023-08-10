@@ -15,4 +15,7 @@ Continue to develop pricing formula.
 
 Find means of lowering risk by evaluating market liquidity. 
 
+(https://docs.cloud.coinbase.com/advanced-trade-api/docs/rest-api-auth)https://docs.cloud.coinbase.com/advanced-trade-api/docs/rest-api-auth
 
+
+https://deephaven.io/blog/2022/08/01/coinbase-websockets/
