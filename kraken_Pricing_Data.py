@@ -1,35 +1,99 @@
 def fetch_current_ticker_price(ticker):
+    response = requests.get("https://api.kraken.com/0/public/Ticker")
+    result = response.json()
+    get_ticker_information = result.get('result')
+    
     trading_pair_Combinations = []
-    unique_Tickers = []
-
-    with open(f"{ticker}_combinations.json") as file:
+    # unique_Tickers = []
+    
+    with open(f"{ticker}_combinations_kraken.json") as file:
         combinations = json.load(file)
 
-    for trio in list(combinations):
+    for trio in list(combinations):                                        # If more Variables are needed, Call Them here and add them to the output below ie.) decimal size
         arbitrage_trio = []
-
+        
         base_ticker = trio["base_ticker"]
         intermediate_ticker = trio["intermediate_ticker"]
         end_ticker = trio["end_ticker"]
+        fees1 = trio["fees1"]
+        fees2 = trio["fees2"]
+        fees3 = trio["fees3"]
+
+        
+        """
         unique_Tickers.append(base_ticker)
         unique_Tickers.append(intermediate_ticker)
         unique_Tickers.append(end_ticker)
+        """
 
-        for bid in valid_bookTickers:
-            if bid["symbol"] == base_ticker:
-                moneymaker = {"symbol": bid["symbol"], "bidPrice": bid["bidPrice"],"askPrice": bid["askPrice"], "stepSize": trio["base_ticker_stepSize"],}
-                arbitrage_trio.append(moneymaker)
-        for bid in valid_bookTickers:
-            if bid["symbol"] == intermediate_ticker:
-                moneymaker = {"symbol": bid["symbol"], "bidPrice": bid["bidPrice"], "askPrice": bid["askPrice"], "stepSize": trio["intermediate_ticker_stepSize"]}
-                arbitrage_trio.append(moneymaker)
-        for bid in valid_bookTickers:
-            if bid["symbol"] == end_ticker:
-                moneymaker = {"symbol": bid["symbol"], "bidPrice": bid["bidPrice"], "askPrice": bid["askPrice"], "stepSize": trio["end_ticker_stepSize"]}
-                arbitrage_trio.append(moneymaker)
-                trading_pair_Combinations.append(arbitrage_trio)
-    # print(trading_pair_Combinations)
-    return(trading_pair_Combinations)
+        for i in get_ticker_information.keys
+            base_ticker_price = ""
+            intermediate_ticker_price = ""
+            end_ticker_price = ""
+        
+            if result[i] == base_ticker:
+                base_ticker_a = result[i]['a']
+                base_ticker_b = result[i]['b']
+                base_ticker_price = result[i]['c']           # c = last trade closed
+                base_ticker_v = result[i]['v']
+                base_ticker_weightedV = result[i]['p']             # Volume weighted average price
+                elif result[i] == intermediate_ticker:
+                    intermediate_ticker_a = result[i]['a']
+                    intermediate_ticker_b = result[i]['b']
+                    intermediate_ticker_price = result[i]['c']
+                    intermediate_ticker_v = result[i]['v']
+                    intermediate_ticker_weightedV = result[i]['p']
+                    elif result[i] == end_ticker:
+                    end_ticker_a = result[i]['a']
+                    end_ticker_b = result[i]['b']
+                    end_ticker_price = result[i]['c']
+                    end_ticker_v = result[i]['v']
+                    end_ticker_weightedV = result[i]['p']
+
+            if len(base_ticker_price) > 0 and len(intermediate_ticker_price) > 0 and len(end_ticker_price) > 0:            # Add more variables here as needed
+            
+                arbitrage_trio.append({
+                    "base_ticker": base_ticker ,
+                    "base_ask": base_ticker_a ,
+                    "base_bid": base_ticker_b ,
+                    "base_ticker_price": base_ticker_price,
+                    "base_ticker_v": base_ticker_v,
+                    "base_ticker_weightedV":base_ticker_weightedV ,
+                    "base_fees": fees1
+    
+                    "intermediate_ticer": intermediate_ticker
+                    "intermediate_ticker_a": intermediate_ticker_a ,
+                    "intermediate_ticker_b": intermediate_ticker_b, 
+                    "intermediate_ticker_price": intermediate_ticker_price, 
+                    "intermediate_ticker_v": intermediate_ticker_v, 
+                    "intermediate_ticker_weightedV": intermediate_ticker_weightedV ,
+                    "intermediate_fees": fees2
+                    
+                    "end_ticker": end_ticker,
+                    "end_ticker_a": end_ticker_a, 
+                    "end_ticker_b": end_ticker_b,
+                    "end_ticker_price": end_ticker_price ,
+                    "end_ticker_v": end_ticker_v ,
+                    "end_ticker_weightedV": end_ticker_weightedV,
+                    "end_fees": fees3,
+                    break
+                    
+                })
+            else:
+                continue
+
+        trading_pair_Combinations.append(arbitrage_trio)
+    return trading_pair_Combinations
+
+print(fetch_current_ticker_price(USD))
+        
+
+
+
+# Reformat input for pricing Formula
+
+
+
 
 # Triangle Arbitrage profit / loss calculations
 def check_if_float_zero(value):
