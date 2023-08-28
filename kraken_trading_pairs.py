@@ -35,7 +35,7 @@ def get_trading_combinations(quote):
         lot_decimals1 = ticker1["lot_decimals"]
         cost_decimals1 =  ticker1["cost_decimals"]
         if status1 == "online":
-            if (sym1_token2 == f'Z{quote}') or (sym1_token2 == f'X{quote}') or (sym1_token2 == quote):
+            if (sym1_token2 == f'Z{quote}') or (sym1_token2 == f'X{quote}') or (sym1_token2 == quote) and ((str(sym1_token1)[0] != 'Z') and str(sym1_token2)[0] != 'Z'):
                 for ticker2 in AssetPairs:
                     sym2_token1 = ticker2["base"]
                     sym2_token2 = ticker2["quote"]
@@ -44,7 +44,7 @@ def get_trading_combinations(quote):
                     status2 = ticker2["status"]
                     lot_decimals2 = ticker2["lot_decimals"]
                     cost_decimals2 = ticker2["cost_decimals"]
-                    if status2 == "online" and sym1_token1 == sym2_token2:
+                    if status2 == "online" and sym1_token1 == sym2_token2 and ((str(sym2_token1)[0] != 'Z') and str(sym2_token2)[0] != 'Z'):
                         for ticker3 in AssetPairs:
                             sym3_token1 = ticker3["base"]
                             sym3_token2 = ticker3["quote"]
@@ -53,7 +53,7 @@ def get_trading_combinations(quote):
                             status3 = ticker3["status"]
                             lot_decimals3 = ticker3["lot_decimals"]
                             cost_decimals3 = ticker3["cost_decimals"]
-                            if status3 == "online" and sym2_token1 == sym3_token1 and sym3_token2 == sym1_token2:
+                            if status3 == "online" and sym2_token1 == sym3_token1 and sym3_token2 == sym1_token2 and ((str(sym3_token1)[0] != 'Z') and str(sym3_token2)[0] != 'Z'):
                                 combination = {
                                     'base': sym1_token2,
                                     "base_ticker": symbol1,
@@ -75,5 +75,10 @@ def get_trading_combinations(quote):
     return combinations
 
 ticker = input("Enter a valid Ticker: ").upper()
+
+print(get_trading_combinations(ticker))
+
+"""
 with open(f'{ticker}_combinations_kraken.json', "w") as file:
     json.dump(get_trading_combinations(ticker), file, indent=4)
+"""
